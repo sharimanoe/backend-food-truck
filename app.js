@@ -14,6 +14,9 @@ app.use("/api", indexRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
+const productRoutes = require("./routes/product.routes");
+app.use("/api", productRoutes);
+
 require("./error-handling")(app);
 
 module.exports = app;
