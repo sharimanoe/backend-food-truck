@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
 const Product = require("../models/Product.model.js");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
@@ -25,7 +24,7 @@ router.post("/products", (req, res) => {
 
 router.get("/products", isAuthenticated, (req, res) => {
   Product.find()
-    .populate("products")
+    // .populate("products")
     .then((response) => {
       res.status(200).json(response);
     })
