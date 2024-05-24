@@ -24,7 +24,18 @@ router.post("/products", (req, res) => {
 
 router.get("/products", isAuthenticated, (req, res) => {
   Product.find()
-    // .populate("products")
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ error });
+    });
+});
+
+router.get("/products/:id", (req, res) => {
+  console.log(req.params.id);
+  Product.findById(req.params.id)
     .then((response) => {
       res.status(200).json(response);
     })
