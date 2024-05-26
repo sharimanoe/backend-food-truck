@@ -14,6 +14,12 @@ app.use("/api", indexRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
+const productRoutes = require("./routes/product.routes");
+app.use("/api", productRoutes);
+
+const orderRoutes = require("./routes/order.routes");
+app.use("/api", orderRoutes);
+
 require("./error-handling")(app);
 
 module.exports = app;
