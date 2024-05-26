@@ -23,7 +23,7 @@ router.post("/orders", (req, res) => {
 router.get("/orders", (req, res) => {
   Order.find()
     // .populate("userId")
-    // .populate("products.productId")
+    .populate("products.productId")
     .then((response) => {
       res.status(200).json(response);
     })

@@ -18,23 +18,6 @@ router.post("/signup", (req, res, next) => {
     return;
   }
 
-  // Valid email format: non-empty, without spaces or @ symbols
-  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  // if (!emailRegex.test(email)) {
-  //   res.status(400).json({ message: "Provide a valid email address." });
-  //   return;
-  // }
-
-  // // checks password for special characters and minimum length
-  // const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-  // if (!passwordRegex.test(password)) {
-  //   res.status(400).json({
-  //     message:
-  //       "Password must have at least 6 characters and contain at least one number, one lowercase and one uppercase letter.",
-  //   });
-  //   return;
-  // }
-
   // Check if the user already exists
   User.findOne({ email })
     .then((foundUser) => {
@@ -101,6 +84,32 @@ router.post("/login", (req, res, next) => {
       }
     })
     .catch((err) => next(err)); // In this case, we send error handling to the error handling middleware.
+});
+
+// GET /auth/user - Retrieves the details of the authenticated user
+router.get("/user", (req, res, next) => {
+  User.findById(req.payload._id)
+    .select("-password") // Exclude the password field
+    .then((user) => {
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json(user);
+    })
+    .catch((err) => next(err)); // Handle errors
+});
+
+// Update user details
+router.put("/user/:id", isAuthenticated, (req, res) => {
+  const { email, name, address, phone, bio, avatar } = req.body;
+
+  User.findByIdAndUpdate(
+    req.params.id,
+    { email, name, address, phone, bio, avatar },
+    { new: true }
+  )
+    .then((updatedUser) => res.json(updatedUser))
+    .catch((err) => res.status(500).json({ error: err.message }));
 });
 
 // GET  /auth/verify  -  Used to verify JWT stored on the client
