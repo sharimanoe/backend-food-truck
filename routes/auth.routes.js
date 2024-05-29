@@ -87,7 +87,7 @@ router.post("/login", (req, res, next) => {
 });
 
 // GET /auth/user - Retrieves the details of the authenticated user
-router.get("/user", (req, res, next) => {
+router.get("/user", isAuthenticated, (req, res, next) => {
   User.findById(req.payload._id)
     .select("-password") // Exclude the password field
     .then((user) => {
